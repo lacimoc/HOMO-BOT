@@ -46,7 +46,10 @@ def message_to_cq(message) -> str:
     message_len = len(message)
     result = ""
     for i in range(0,message_len):
-        result += encode_to_cq(message[i])
+        try:
+            result += encode_to_cq(message[i])
+        except TypeError:
+            return " "
     return result
 
 
