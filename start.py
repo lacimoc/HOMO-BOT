@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-import datetime
+import os
 
 import bot
 from bot.flask import Flask, request, jsonify
@@ -60,5 +60,15 @@ async def event():
 
 if __name__ == '__main__':
     host = '127.0.0.1'
-    port = '5000'
+    try:
+        with open(file=os.getcwd()+"\\conf\\config.json", mode='r') as conf:
+            import json
+            port = json.load(conf).get('report_port')
+            if port == None:
+                raise FileNotFoundError
+    except FileNotFoundError:
+        with open(file=os.getcwd()+"\\conf\\config.json", mode='w') as conf:
+            import json
+            json.dump({"report_port":"","listen_port":""})
+            raise FileNotFoundError
     listener.run(host=host, port=port)
