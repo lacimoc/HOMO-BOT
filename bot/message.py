@@ -58,7 +58,7 @@ def encode_to_cq(message) -> str:
         return message.get('data').get('text')
     
     if message.get('type') == 'image':
-        return f"[CQ:image,file={message.get('data').get('http_file')}]"
+        return f"[CQ:image,file={message.get('data').get('url')}]"
     
     if message.get('type') == 'record':
         return f"[CQ:record,file={message.get('data').get('file')}]"
