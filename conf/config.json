@@ -1,4 +1,4 @@
 {
-    "report_port":"5000",
-    "listen_port":"3000"
+    "report_port":"",
+    "listen_port":""
 }
