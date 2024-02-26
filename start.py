@@ -35,6 +35,8 @@ listener = Flask("ROBOT")
 async def event():
     event_data = request.json
     
+    #log.logger.info(str(event_data))  #debug
+    
     processed_message = message.getmessage(event_data)
     
     if event_data.get('message_type') == "group":
@@ -50,10 +52,6 @@ async def event():
     except Exception as e:
         #print(e)
         pass
-
-
-    #log.logger.info(str(event_data))  #debug
-
 
     return jsonify({'status': 'success', 'message': 'Event received'}), 200
 
