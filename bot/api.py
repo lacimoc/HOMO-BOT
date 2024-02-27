@@ -190,3 +190,12 @@ class event():
             log.logger.info("[BotAPI] <group_leave> Done")
         else:
             log.logger.info("[BotAPI] <group_leave> Fail")
+
+    
+    async def set_group_ban(group_id, user_id, duration=60):
+        import json
+
+        url = f"http://127.0.0.1:{listen_port}/set_group_ban"
+        data = json.dumps({"group_id":group_id, "user_id":user_id, "duration":duration})
+        await post(url=url, data=data)
+        log.logger.info("[BotAPI] <set_group_ban> Done")
