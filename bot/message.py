@@ -27,7 +27,9 @@ def getmessage(event_data) -> classmethod:
             raw_msg = event_data.get('raw_message')
             msg_id = event_data.get('message_id')
             original_message = event_data
-            msg_type = "private"
+            msg_type = event_data.get('message_type')
+            operator_id = event_data.get('operator_id')
+            notice_type = event_data.get('notice_type')
         return message
     
     if event_data.get('message_type') == 'group':
@@ -39,7 +41,23 @@ def getmessage(event_data) -> classmethod:
             raw_msg = event_data.get('raw_message')
             msg_id = event_data.get('message_id')
             original_message = event_data
-            msg_type = "group"
+            msg_type = event_data.get('message_type')
+            operator_id = event_data.get('operator_id')
+            notice_type = event_data.get('notice_type')
+        return message
+    
+    if event_data.get('notice_type')[-6:] == 'recall':
+        class message(GroupMessage):
+            group_id = event_data.get('group_id')
+            user_id = event_data.get('user_id')
+            sender = event_data.get('sender')
+            msg = None
+            raw_msg = event_data.get('raw_message')
+            msg_id = event_data.get('message_id')
+            original_message = event_data
+            msg_type = event_data.get('message_type')
+            operator_id = event_data.get('operator_id')
+            notice_type = event_data.get('notice_type')
         return message
 
 def message_to_cq(message) -> str:
