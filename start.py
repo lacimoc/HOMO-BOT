@@ -39,12 +39,14 @@ async def event():
     
     processed_message = message.getmessage(event_data)
     
+    if processed_message.notice_type == "group_recall" or processed_message.notice_type == "private_recall":
+        log.logger.info(f"[BotCore] {processed_message.notice_type[:-7]}_recall Operator_id: {processed_message.operator_id} Messageid: {processed_message.msg_id}")
     if event_data.get('message_type') == "group":
         log.logger.info(f"[BotCore] GroupMessage in {event_data.get('group_id')} {event_data.get('sender').get('nickname')}:{processed_message.msg}")
     if event_data.get('message_type') == "private":
         log.logger.info(f"[BotCore] PrivateMessage in {event_data.get('user_id')} {event_data.get('sender').get('nickname')}:{processed_message.msg}")
     
-    if await botinfo.main(event_data, api.event, log.logger, login_info):
+    if await botinfo.main(processed_message, api.event, log.logger, login_info):
         return jsonify({'status': 'success', 'message': 'Event received'}), 200
     
     try:
