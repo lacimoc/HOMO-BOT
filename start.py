@@ -9,6 +9,7 @@ from bot import api
 from bot import log
 from bot import botinfo
 from bot import message
+from bot import botcore
 
 
 import bot.log as log
@@ -38,6 +39,8 @@ async def event():
     #log.logger.info(str(event_data))  #debug
     
     processed_message = message.getmessage(event_data)
+
+    await botcore.bot_core_event(processed_message, api.event)
     
     if processed_message.notice_type == "group_recall" or processed_message.notice_type == "private_recall":
         log.logger.info(f"[BotCore] {processed_message.notice_type[:-7]}_recall Operator_id: {processed_message.operator_id} Messageid: {processed_message.msg_id}")
