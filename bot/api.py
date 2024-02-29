@@ -199,13 +199,6 @@ class event():
         data = json.dumps({"group_id":group_id, "user_id":user_id, "duration":duration})
         await post(url=url, data=data)
         log.logger.info("[BotAPI] <set_group_ban> Done")
-        async def set_group_leave(group_id):
-        import json
-
-        url = f"http://127.0.0.1:{listen_port}/set_group_leave"
-        data = json.dumps({"group_id":group_id})
-        await post(url=url, data=data)
-        log.logger.info(f"[BotAPI] <set_group_leave> {group_id} Done")
 
     
     async def set_group_kick(group_id, user_id):
