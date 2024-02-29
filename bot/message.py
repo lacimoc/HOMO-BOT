@@ -30,6 +30,7 @@ def getmessage(event_data) -> classmethod:
             msg_type = event_data.get('message_type')
             operator_id = event_data.get('operator_id')
             notice_type = event_data.get('notice_type')
+            sub_type = ""
         return message
     
     if event_data.get('message_type') == 'group':
@@ -44,23 +45,42 @@ def getmessage(event_data) -> classmethod:
             msg_type = event_data.get('message_type')
             operator_id = event_data.get('operator_id')
             notice_type = event_data.get('notice_type')
+            sub_type = ""
         return message
     
-    if event_data.get('notice_type')[-6:] == 'recall':
+    if event_data.get('sub_type') != None:
         class message(GroupMessage):
             group_id = event_data.get('group_id')
             user_id = event_data.get('user_id')
             sender = event_data.get('sender')
-            msg = None
+            msg = message_to_cq(event_data.get('message'))
             raw_msg = event_data.get('raw_message')
             msg_id = event_data.get('message_id')
             original_message = event_data
             msg_type = event_data.get('message_type')
             operator_id = event_data.get('operator_id')
             notice_type = event_data.get('notice_type')
+            sub_type = event_data.get('sub_type')
+        return message
+
+    if event_data.get('notice_type') != None:
+        class message(GroupMessage):
+            group_id = event_data.get('group_id')
+            user_id = event_data.get('user_id')
+            sender = event_data.get('sender')
+            msg = ""
+            raw_msg = event_data.get('raw_message')
+            msg_id = event_data.get('message_id')
+            original_message = event_data
+            msg_type = event_data.get('message_type')
+            operator_id = event_data.get('operator_id')
+            notice_type = event_data.get('notice_type')
+            sub_type = event_data.get('sub_type')
         return message
 
 def message_to_cq(message) -> str:
+    if message == None:
+        return " "
     message_len = len(message)
     result = ""
     for i in range(0,message_len):
