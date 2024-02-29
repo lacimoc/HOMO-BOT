@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import json
 
@@ -200,6 +202,15 @@ class event():
         await post(url=url, data=data)
         log.logger.info("[BotAPI] <set_group_ban> Done")
 
+
+    async def set_group_leave(group_id):
+        import json
+
+        url = f"http://127.0.0.1:{listen_port}/set_group_leave"
+        data = json.dumps({"group_id":group_id})
+        await post(url=url, data=data)
+        log.logger.info(f"[BotAPI] <set_group_leave> {group_id} Done")
+
     
     async def set_group_kick(group_id, user_id):
         import json
@@ -208,3 +219,21 @@ class event():
         data = json.dumps({"group_id":group_id, "user_id":user_id})
         await post(url=url, data=data)
         log.logger.info(f"[BotAPI] <set_group_kick> kick {user_id} from {group_id} Done")
+
+
+    async def set_group_add_request(flag, sub_type, approve):
+        import json
+
+        url = f"http://127.0.0.1:{listen_port}/set_group_add_request"
+        data = json.dumps({"flag":flag, "sub_type":sub_type, "approve":approve})
+        await post(url=url, data=data)
+        log.logger.info(f"[BotAPI] group_invite accept Done")
+
+        
+    async def set_friend_add_request(flag, approve):
+        import json
+
+        url = f"http://127.0.0.1:{listen_port}/set_friend_add_request"
+        data = json.dumps({"flag":flag, "approve":approve})
+        await post(url=url, data=data)
+        log.logger.info(f"[BotAPI] friend_request accept Done")
