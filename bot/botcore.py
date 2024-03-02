@@ -20,7 +20,7 @@ async def bot_core_event(message_data, event):
         await event.set_group_add_request(message_data.original_message.get('flag'), message_data.original_message.get('sub_type'), True)
         return None
 
-    if message_data.sub_type == "invite" and conf.get('agree_friend_add') == "1":
+    if message_data.request_type == "friend" and message_data.post_type == "request" and conf.get('agree_friend_add') == "1":
         await event.set_friend_add_request(message_data.original_message.get('flag'), True)
         return None
     
