@@ -106,76 +106,80 @@ class event():
         return json.loads(login_info.content.decode('utf-8'))
     
 
-    async def get_group_list():
+    def get_group_list():
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_list"
-        group_list = await post(url=url)
+        group_list = requests.post(url=url)
         if group_list.status_code != 200:
             return None
         return json.loads(group_list.content.decode('utf-8').get('data'))
     
 
-    async def get_group_info(group_id):
+    def get_group_info(group_id):
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_info"
         data = json.dumps({"group_id":group_id})
-        group_info = await post(url=url,data=data)
+        group_info = requests.post(url=url,data=data)
         if group_info.status_code != 200:
             return None
         return json.loads(group_info.content.decode('utf-8').get('data'))
     
 
-    async def get_group_member_list(group_id):
+    def get_group_member_list(group_id):
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_member_list"
         data = json.dumps({"group_id":group_id})
-        group_member_list = await post(url=url,data=data)
+        group_member_list = requests.post(url=url,data=data)
         if group_member_list.status_code != 200:
             return None
         return json.loads(group_member_list.content.decode('utf-8').get('data'))
     
 
-    async def get_group_member_info(group_id, user_id):
+    def get_group_member_info(group_id, user_id):
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_member_info"
         data = json.dumps({"group_id":group_id, "user_id":user_id})
-        group_member_info = await post(url=url, data=data)
-        if group_member_info.status_code != 200:
-            return None
-        return json.loads(group_member_info.content.decode('utf-8').get('data'))
+        return json.loads(requests.post(url=url, data=data).content.decode('utf-8')).get('data')
     
 
-    async def get_friend_list():
+    def get_friend_list():
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_friend_list"
-        friend_list = await post(url=url)
+        friend_list = requests.post(url=url)
         if friend_list.status_code != 200:
             return None
         return json.loads(friend_list.content.decode('utf-8').get('data'))
     
 
-    async def get_msg(message_id):
+    def get_msg(message_id):
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_msg"
         data = json.dumps({"message_id":message_id})
-        msg = await post(url=url, data=data)
+        msg = requests.post(url=url, data=data)
         if msg.status_code != 200:
             return None
         return json.loads(msg.content.decode('utf-8').get('data'))
     
 
-    async def send_like(user_id, times=1):
+    def send_like(user_id, times=1):
         import json
+        import requests
 
         url = f"http://127.0.0.1:{listen_port}/send_like"
         data = json.dumps({"user_id":user_id, "times":times})
-        status = await post(url=url, data=data).status_code
+        status = requests.post(url=url, data=data).status_code
         if status == 200:
             log.logger.info("[BotAPI] <send_like> Done")
         else:
