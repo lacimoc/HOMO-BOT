@@ -29,13 +29,10 @@ class event():
     
 
     async def reply(message_data, data):
-        import json
-
         if message_data.msg_type == "group":
             log.logger.info(f"[BotAPI] <reply> GroupMessage: {message_data.group_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_group_msg"
             data = {"group_id":f"{message_data.group_id}", "message":f"{data}"}
-            data = json.dumps(data)
             
             return await post(url=url, data=data)
         
@@ -43,55 +40,44 @@ class event():
             log.logger.info(f"[BotAPI] <reply> PrivateMessage: {message_data.user_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_private_msg"
             data = {"user_id":f"{message_data.user_id}", "message":f"{data}"}
-            data = json.dumps(data)
             
             return await post(url=url, data=data)
 
     
     async def send_group_msg(group_id, data, type=0):
-        import json
-        
         if type != 0:
             log.logger.info(f"[BotAPI] <reply> GroupMessage: {group_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_group_msg"
             data = {"group_id":f"{group_id}", "message":[{"type":f"{type}", "data":{"text":f"{data}"}}]}
-            data = json.dumps(data)
 
             return await post(url=url, data=data)
         else:
             log.logger.info(f"[BotAPI] <reply> GroupMessage: {group_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_group_msg"
             data = {"group_id":f"{group_id}", "message":f"{data}"}
-            data = json.dumps(data)
     
             return await post(url=url, data=data)
     
 
     async def send_private_msg(user_id, data, type=0):
-        import json
-
         if type != 0:
             log.logger.info(f"[BotAPI] <reply> PrivateMessage: {user_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_private_msg"
             data = {"user_id":f"{user_id}", "message":[{"type":f"{type}", "data":{"text":f"{data}"}}]}
-            data = json.dumps(data)
 
             return await post(url=url, data=data)
         else:
             log.logger.info(f"[BotAPI] <reply> PrivateMessage: {user_id} Message: {data}")
             url = f"http://127.0.0.1:{listen_port}/send_private_msg"
             data = {"user_id":f"{user_id}", "message":f"{data}"}
-            data = json.dumps(data)
 
             return await post(url=url, data=data)
 
 
     async def delete_msg(message_id):
-        import json
-
         log.logger.info(f"[BotAPI] <delete_msg> MessageID: {message_id} Done")
         url = f"http://127.0.0.1:{listen_port}/delete_msg"
-        data = json.dumps({"message_id":message_id})
+        data = {"message_id":message_id}
         return await post(url=url, data=data)
 
 
@@ -118,11 +104,10 @@ class event():
     
 
     def get_group_info(group_id):
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_info"
-        data = json.dumps({"group_id":group_id})
+        data = {"group_id":group_id}
         group_info = requests.post(url=url,data=data)
         if group_info.status_code != 200:
             return None
@@ -130,11 +115,10 @@ class event():
     
 
     def get_group_member_list(group_id):
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_member_list"
-        data = json.dumps({"group_id":group_id})
+        data = {"group_id":group_id}
         group_member_list = requests.post(url=url,data=data)
         if group_member_list.status_code != 200:
             return None
@@ -142,16 +126,14 @@ class event():
     
 
     def get_group_member_info(group_id, user_id):
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_group_member_info"
-        data = json.dumps({"group_id":group_id, "user_id":user_id})
+        data = {"group_id":group_id, "user_id":user_id}
         return json.loads(requests.post(url=url, data=data).content.decode('utf-8')).get('data')
     
 
     def get_friend_list():
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_friend_list"
@@ -162,11 +144,10 @@ class event():
     
 
     def get_msg(message_id):
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/get_msg"
-        data = json.dumps({"message_id":message_id})
+        data = {"message_id":message_id}
         msg = requests.post(url=url, data=data)
         if msg.status_code != 200:
             return None
@@ -174,70 +155,47 @@ class event():
     
 
     def send_like(user_id, times=1):
-        import json
         import requests
 
         url = f"http://127.0.0.1:{listen_port}/send_like"
-        data = json.dumps({"user_id":user_id, "times":times})
+        data = {"user_id":user_id, "times":times}
         status = requests.post(url=url, data=data).status_code
         if status == 200:
             log.logger.info("[BotAPI] <send_like> Done")
         else:
             log.logger.info("[BotAPI] <send_like> Fail")
 
-
-    async def set_group_leave(group_id):
-        import json
-
-        url = f"http://127.0.0.1:{listen_port}/set_group_leave"
-        data = json.dumps({"group_id":group_id})
-        status = await post(url=url, data=data).status_code
-        if status == 200:
-            log.logger.info("[BotAPI] <group_leave> Done")
-        else:
-            log.logger.info("[BotAPI] <group_leave> Fail")
-
     
     async def set_group_ban(group_id, user_id, duration=60):
-        import json
-
         url = f"http://127.0.0.1:{listen_port}/set_group_ban"
-        data = json.dumps({"group_id":group_id, "user_id":user_id, "duration":duration})
+        data = {"group_id":group_id, "user_id":user_id, "duration":duration}
         await post(url=url, data=data)
         log.logger.info("[BotAPI] <set_group_ban> Done")
 
 
     async def set_group_leave(group_id):
-        import json
-
         url = f"http://127.0.0.1:{listen_port}/set_group_leave"
-        data = json.dumps({"group_id":group_id})
+        data = {"group_id":group_id}
         await post(url=url, data=data)
         log.logger.info(f"[BotAPI] <set_group_leave> {group_id} Done")
 
     
     async def set_group_kick(group_id, user_id):
-        import json
-
         url = f"http://127.0.0.1:{listen_port}/set_group_kick"
-        data = json.dumps({"group_id":group_id, "user_id":user_id})
+        data = {"group_id":group_id, "user_id":user_id}
         await post(url=url, data=data)
         log.logger.info(f"[BotAPI] <set_group_kick> kick {user_id} from {group_id} Done")
 
 
     async def set_group_add_request(flag, sub_type, approve):
-        import json
-
         url = f"http://127.0.0.1:{listen_port}/set_group_add_request"
-        data = json.dumps({"flag":flag, "sub_type":sub_type, "approve":approve})
+        data = {"flag":flag, "sub_type":sub_type, "approve":approve}
         await post(url=url, data=data)
         log.logger.info(f"[BotAPI] group_invite accept Done")
 
         
     async def set_friend_add_request(flag, approve):
-        import json
-
         url = f"http://127.0.0.1:{listen_port}/set_friend_add_request"
-        data = json.dumps({"flag":flag, "approve":approve})
+        data = {"flag":flag, "approve":approve}
         await post(url=url, data=data)
         log.logger.info(f"[BotAPI] friend_request accept Done")
