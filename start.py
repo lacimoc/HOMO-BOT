@@ -39,8 +39,6 @@ async def event():
     #log.logger.info(str(event_data))  #debug
     
     processed_message = message.getmessage(event_data)
-
-    await botcore.bot_core_event(processed_message, api.event)
     
     if processed_message.notice_type == "group_recall" or processed_message.notice_type == "private_recall":
         log.logger.info(f"[BotCore] {processed_message.notice_type[:-7]}_recall Operator_id: {processed_message.operator_id} Messageid: {processed_message.msg_id}")
@@ -48,15 +46,14 @@ async def event():
         log.logger.info(f"[BotCore] GroupMessage in {event_data.get('group_id')} {event_data.get('sender').get('nickname')}:{processed_message.msg}")
     if event_data.get('message_type') == "private":
         log.logger.info(f"[BotCore] PrivateMessage in {event_data.get('user_id')} {event_data.get('sender').get('nickname')}:{processed_message.msg}")
+
+    if await botcore.bot_core_event(processed_message, api.event):
+        return jsonify({'status': 'success', 'message': 'Event received'}), 200
     
     if await botinfo.main(processed_message, api.event, log.logger, login_info):
         return jsonify({'status': 'success', 'message': 'Event received'}), 200
     
-    try:
-        await plugin.work(processed_message, api.event)
-    except Exception as e:
-        #print(e)
-        pass
+    await plugin.work(processed_message, api.event)
 
     return jsonify({'status': 'success', 'message': 'Event received'}), 200
 
