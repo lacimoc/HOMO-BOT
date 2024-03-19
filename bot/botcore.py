@@ -38,7 +38,7 @@ async def bot_core_event(message_data, event) -> bool:
             json.dump(switch_dict, f)
             f.close()
             await event.reply(message_data, "开启成功")
-            return False
+            return True
 
         if message_data.msg == f"[CQ:at,qq={event.get_login_info().get('data').get('user_id')}] .bot off":
             f = open(file=f"{__file__[:-10]}block_data.json", mode='r')
@@ -49,7 +49,7 @@ async def bot_core_event(message_data, event) -> bool:
             json.dump(switch_dict, f)
             f.close()
             await event.reply(message_data, "关闭成功")
-            return False
+            return True
 
 
         f = open(file=f"{__file__[:-10]}block_data.json", mode='r')
@@ -61,5 +61,6 @@ async def bot_core_event(message_data, event) -> bool:
             json.dump(switch_dict, f)
             f.close()
         elif switch_dict.get(f'{message_data.group_id}') == 0:
-            return False
-        return True
+            return True
+        return False
+    return False
