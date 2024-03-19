@@ -1,4 +1,8 @@
+import json
+
 def getmessage(event_data) -> classmethod:
+    f = open(f"{__file__[:-10]}master.json", mode='r')
+    master_statu = json.load(f).get(f"{event_data.get('user_id')}") == 1
     if event_data.get('message_type') == 'private':
         class message():
             user_id = event_data.get('user_id')
@@ -13,6 +17,7 @@ def getmessage(event_data) -> classmethod:
             sub_type = ""
             post_type = event_data.get('post_type')
             request_type = event_data.get('request_type')
+            master = master_statu
         return message
     
     if event_data.get('message_type') == 'group':
@@ -30,6 +35,7 @@ def getmessage(event_data) -> classmethod:
             sub_type = ""
             post_type = event_data.get('post_type')
             request_type = event_data.get('request_type')
+            master = master_statu
         return message
     
     if event_data.get('sub_type') != None:
@@ -47,6 +53,7 @@ def getmessage(event_data) -> classmethod:
             sub_type = event_data.get('sub_type')
             post_type = event_data.get('post_type')
             request_type = event_data.get('request_type')
+            master = master_statu
         return message
 
     if event_data.get('notice_type') != None:
@@ -64,6 +71,7 @@ def getmessage(event_data) -> classmethod:
             sub_type = event_data.get('sub_type')
             post_type = event_data.get('post_type')
             request_type = event_data.get('request_type')
+            master = master_statu
         return message
 
     if event_data.get('post_type') == "request" and event_data.get('request_type') == "friend":
@@ -81,6 +89,7 @@ def getmessage(event_data) -> classmethod:
             sub_type = event_data.get('sub_type')
             post_type = event_data.get('post_type')
             request_type = event_data.get('request_type')
+            master = master_statu
         return message
 
 def message_to_cq(message) -> str:
