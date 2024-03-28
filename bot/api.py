@@ -151,7 +151,7 @@ class event():
         msg = requests.post(url=url, data=data)
         if msg.status_code != 200:
             return None
-        return json.loads(msg.content.decode('utf-8').get('data'))
+        return json.loads(msg.content.decode('utf-8'))
     
 
     def send_like(user_id, times=1):
